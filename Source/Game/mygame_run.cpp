@@ -25,8 +25,15 @@ void CGameStateRun::OnBeginState()
 {
 }
 
-void CGameStateRun::OnMove()							// 移動遊戲元素
+bool CGameStateRun::OnMove(CMovingBitmap A, CMovingBitmap B)							// 移動遊戲元素
 {
+	if (A.Left() >=B.Left()-20 && A.Left() <= B.Left() + 20 && A.Top() >= B.Top() - 20 && A.Top() <= B.Top() + 20){
+		return true;
+	}
+	else {
+		return false;
+	}
+		
 }
 
 void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
@@ -47,7 +54,7 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 	});
 	background.SetTopLeft(0, 0);
 
-	character.LoadBitmapByString({ "resources/gray.bmp" });
+	character.LoadBitmapByString({ "resources/giraffe.bmp" });
 	character.SetTopLeft(150, 265);
 
 	chest_and_key.LoadBitmapByString({ "resources/chest.bmp", "resources/chest_ignore.bmp" }, RGB(255, 255, 255));
@@ -55,9 +62,12 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 
 	bee.LoadBitmapByString({ "resources/bee_1.bmp", "resources/bee_2.bmp" });
 	bee.SetTopLeft(462, 265);
+	bee.SetAnimation(30, false);
 
 	ball.LoadBitmapByString({ "resources/ball-3.bmp", "resources/ball-2.bmp", "resources/ball-1.bmp", "resources/ball-ok.bmp" });
 	ball.SetTopLeft(150, 430);
+	ball.SetAnimation(100, true);
+	ball.ToggleAnimation();
 
 	for (int i = 0; i < 3; i++) {
 		door[i].LoadBitmapByString({ "resources/door_close.bmp", "resources/door_open.bmp" }, RGB(255, 255, 255));
@@ -119,11 +129,42 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			}
 		}
 	}
+	if (nChar == VK_RIGHT) {
+		// Do something...
+		character.SetTopLeft(character.Left() + 20, character.Top() + 0);
+	}
+	if (nChar == VK_LEFT) {
+		// Do something...
+		character.SetTopLeft(character.Left() - 20, character.Top() + 0);
+	}
+	if (nChar == VK_UP) {
+		// Do something...
+		character.SetTopLeft(character.Left() + 0, character.Top() - 20);
+	}
+	if (nChar == VK_DOWN) {
+		// Do something...
+		character.SetTopLeft(character.Left() + 0, character.Top() + 20);
+	}
+	if (phase == 3) {
+		if (OnMove(character, chest_and_key)) {
+			chest_and_key.SelectShowBitmap(1);
+		}
+	}
+	if (phase == 5) {
+		if (OnMove(character, door[0])) {
+			door[0].SelectShowBitmap(1);
+		}
+		if (OnMove(character, door[1])) {
+			door[1].SelectShowBitmap(1);
+		}
+		if (OnMove(character, door[2])) {
+			door[2].SelectShowBitmap(1);
+		}
+	}
 }
 
 void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-	
 }
 
 void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
