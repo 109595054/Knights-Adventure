@@ -19,6 +19,8 @@ namespace game_framework {
 		void SetIsAlive(bool alive);							
 		void SetDelay(int d);									
 		void getxy(int x2, int y2);
+		int getx();
+		int gety();
 		void forward();
 		void back();
 		void istach();

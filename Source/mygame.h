@@ -59,8 +59,8 @@ namespace game_framework {
 		void OnMove();									// 移動遊戲元素
 		void OnShow();									// 顯示這個狀態的遊戲畫面
 	private:
-		int upkey, downkey, leftkey, rightkey, enemyconst, demonconst, totalenemy, totalboss, totaltrap, totalchest, totaldemon,onekey,twokey,threekey,fourkey;
-		int level;
+		int upkey, downkey, leftkey, rightkey, enemyconst, demonconst, totalenemy, totalboss, totaltrap, totalchest, totaldemon,onekey,twokey,threekey,fourkey,nowenemy,nowdemon;
+		int level,alevel;
 		CPractice c_practice;
 		CMovingBitmap pratice;
 		int picX, picY;
@@ -100,6 +100,8 @@ namespace game_framework {
 		CMovingBitmap orc_1;
 		CMovingBitmap orc_2;
 		CMovingBitmap orc_3;
+		CMovingBitmap orc_4;
+		CMovingBitmap orc_5;
 		CMovingBitmap demon_5;
 		CMovingBitmap demon_4;
 		CMovingBitmap demon_3;

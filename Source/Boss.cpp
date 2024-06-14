@@ -44,12 +44,9 @@ namespace game_framework {
 	}
 	bool Boss::HitRectangle(int tx1, int ty1, int tx2, int ty2)
 	{
-		if (!is_alive) {
-			x = 0;
-			y = 0;
-		}
-		int x1 = x + dx;			
-		int y1 = y + dy;				
+
+		int x1 = x + dx -10;			
+		int y1 = y + dy -10;				
 		int x2 = x1 + run.Width();	
 		int y2 = y1 + run.Height();	
 		return (tx2 >= x1 && tx1 <= x2 && ty2 >= y1 && ty1 <= y2);
@@ -62,6 +59,14 @@ namespace game_framework {
 	{
 		inx = x - x2;
 		iny = y - y2;
+	}
+	int Boss::getx() 
+	{
+		return x;
+	}
+	int Boss::gety()
+	{
+		return y;
 	}
 	void Boss::LoadBitmap()
 	{

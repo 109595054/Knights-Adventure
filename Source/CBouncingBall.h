@@ -16,6 +16,7 @@ namespace game_framework {
 	private:
 		int x, y;// 圖形座標
 		int level;//第幾關
+		int alevel;
 		int n;//第n張背景
 		int map[3][3];
 		CAnimation animation;	// 利用動畫作圖形

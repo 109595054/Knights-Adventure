@@ -11,6 +11,7 @@ namespace game_framework {
 		int  GetY1();					// 擦子左上角 y 座標
 		int  GetX2();					// 擦子右下角 x 座標
 		int  GetY2();					// 擦子右下角 y 座標
+		int  GetSword();
 		int n;
 		void Initialize();				// 設定擦子為初始值
 		void LoadBitmap();				// 載入圖形

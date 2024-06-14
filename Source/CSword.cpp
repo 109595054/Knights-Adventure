@@ -36,6 +36,10 @@ namespace game_framework {
 		return y + 100;
 	}
 
+	int CSword::GetSword() {
+		return isstop;
+	}
+
 	void CSword::Initialize()
 	{
 		const int X_POS = 20000;
@@ -47,7 +51,7 @@ namespace game_framework {
 		n = 7;
 		attack1 = 0;
 		attack2 = 0;
-		time = 70;
+		time = 50;
 		attackl.SetDelayCount(1);
 		attackr.SetDelayCount(1);
 	}
@@ -71,18 +75,18 @@ namespace game_framework {
 
 	void CSword::OnMove()
 	{
-		attackstopr.SetTopLeft(x + 40, y - 10);
+		attackstopr.SetTopLeft(x + 45, y - 10);
 		attackstopl.SetTopLeft(x - 20, y - 10);
 		const int STEP_SIZE = 2;
 		if (isClick == 1) {
 			if (isstop == 1) {
-				attackr.SetTopLeft(x + 40, y - 10);
+				attackr.SetTopLeft(x + 45, y - 10);
 				attack1 = 0;
-				attack2 = 100;
+				attack2 = 80;
 			}
 			else if (isstop == 2) {
 				attackl.SetTopLeft(x - 65, y - 10);
-				attack1 = 100;
+				attack1 = 50;
 				attack2 = 0;
 			}
 		}
@@ -114,7 +118,7 @@ namespace game_framework {
 	{
 		if (time == 0) {
 			isClick = 0;
-			time = 75;
+			time = 45;
 		}
 		time--;
 		

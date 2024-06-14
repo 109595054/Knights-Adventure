@@ -84,10 +84,12 @@ void CGameStateOver::OnMove()
 	}
 	CAudio::Instance()->Stop(AUDIO_NTUT);
 	CAudio::Instance()->Stop(AUDIO_BOSS_BATTLE);
+	
+
 }
 void CGameStateOver::OnBeginState()
 {
-	counter = 30 * 5; // 5 seconds
+	counter = 15 * 5; // 3 seconds
 	CAudio::Instance()->Stop(AUDIO_NTUT);
 	CAudio::Instance()->Stop(AUDIO_BOSS_BATTLE);
 	if (this->game->hits_left.GetInteger() <= 0) {
@@ -158,7 +160,7 @@ void CGameStateOver::OnShow()
 CGameStateRun::CGameStateRun(CGame *g)
 : CGameState(g), NUMBALLS(10)
 {
-	totalenemy = 3;
+	totalenemy = 5;
 	totalboss = 1;
 	totaltrap = 2;
 	totalchest = 1;
@@ -262,14 +264,36 @@ void CGameStateRun::newlevel()
 {
 	CAudio::Instance()->Play(AUDIO_NTUT);
 	CAudio::Instance()->Play(AUDIO_BOSS_BATTLE);
-	level++;
+
+	alevel++;
+
+	if (alevel % 15 == 0) {
+		level++;
+	}
+
 	if (level == 0) {
 		CAudio::Instance()->Stop(AUDIO_BOSS_BATTLE);
 		const int BALL_GAP = 90;
 		const int BALL_XY_OFFSET = 100;
 		const int BALL_PER_ROW = 7;
-		enemyconst = 3;
-		demonconst = 5;
+
+		if (alevel <= 2){
+			enemyconst = 1;
+		}
+		else if (alevel <= 5) {
+			enemyconst = 2;
+		}
+		else if (alevel <= 8) {
+			enemyconst = 3;
+		}
+		else if (alevel <= 11) {
+			enemyconst = 4;
+		}
+		else if (alevel <= 14) {
+			enemyconst = 5;
+		}
+		nowenemy = enemyconst;
+		nowdemon = demonconst;
 		ball = new CBall[enemyconst];
 		for (int i = 0; i < enemyconst; i++)
 			ball[i].LoadBitmap();							
@@ -280,16 +304,35 @@ void CGameStateRun::newlevel()
 			ball[i].SetDelay(x_pos);
 			ball[i].SetIsAlive(true);
 		}
+		
 	}
-	eraser.Initialize();
-	sword.Initialize();
-	map.setmap(level);
+
+	
+
+
 	if (level == 1) {
 		CAudio::Instance()->Stop(AUDIO_BOSS_BATTLE);
 		const int BALL_GAP = 90;
 		const int BALL_XY_OFFSET = 100;
 		const int BALL_PER_ROW = 7;
-		demonconst = 5;
+		if (alevel <= 17) {
+			demonconst = 1;
+		}
+		else if (alevel <= 20) {
+			demonconst = 2;
+		}
+		else if (alevel <= 23) {
+			demonconst = 3;
+		}
+		else if (alevel <= 26) {
+			demonconst = 4;
+		}
+		else if (alevel <= 29) {
+			demonconst = 5;
+		}
+		nowenemy = enemyconst;
+		nowdemon = demonconst;
+		
 		demon = new Demon[demonconst];
 		for (int i = 0; i < demonconst; i++)
 			demon[i].LoadBitmap();								
@@ -300,10 +343,14 @@ void CGameStateRun::newlevel()
 			demon[i].SetDelay(x_pos);
 			demon[i].SetIsAlive(true);
 		}
+		
+		
 	}
-	eraser.Initialize();
-	sword.Initialize();
-	map.setmap(level);
+	
+
+
+
+
 	if (level == 2) {
 		CAudio::Instance()->Stop(AUDIO_NTUT);
 		const int BOSS_HITS_LEFT = 10;
@@ -314,6 +361,7 @@ void CGameStateRun::newlevel()
 		const int BOSS_PER_ROW = 7;
 		const int BOSS_GAP = 7;
 		boss_blood.SetInteger(BOSS_HITS_LEFT);
+		alevel = 0;
 		for (int i = 0; i < 1; i++) {				
 			int x_pos = i % BOSS_PER_ROW;
 			int y_pos = i / BOSS_PER_ROW;
@@ -322,10 +370,15 @@ void CGameStateRun::newlevel()
 			boss[i].SetIsAlive(true);
 		}
 	}
+	
+	eraser.Initialize();
+	sword.Initialize();
+	map.setmap(level);
 
 }
 void CGameStateRun::OnMove()							// 移動遊戲元素
 {
+	
 	if (enemyconst == 0 && level == 0) {
 		newlevel();
 	}
@@ -333,6 +386,13 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 		newlevel();
 	}
 	if (boss_blood.GetInteger() <= 0) {
+		level = 0;
+		alevel = 0;
+		enemyconst = 1;
+		demonconst = 1;
+		nowenemy = enemyconst;
+		nowdemon = demonconst;
+		map.setmap(level);
 		GotoGameState(GAME_STATE_OVER);
 	}
 	if (level == 2) {
@@ -354,6 +414,8 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 	if (level == 0) {
 		background1.SetTopLeft(0, 0);
 		name1.SetTopLeft(600, 30);
+		orc_5.SetTopLeft(600, 70);
+		orc_4.SetTopLeft(600, 70);
 		orc_3.SetTopLeft(600, 70);
 		orc_2.SetTopLeft(600, 70);
 		orc_1.SetTopLeft(600, 70);
@@ -383,8 +445,9 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 	eraser.OnMove();
 	sword.Setisstop(eraser.Getstop());
 	sword.OnMove();
+	
 	if (level == 0) {
-		for (int i=0; i < totalenemy; i++){
+		for (int i=0; i < nowenemy; i++){
 			if (ball[i].IsAlive() && ball[i].HitCSword(&sword)) {
 				enemyconst--;
 				ball[i].SetIsAlive(false);
@@ -398,13 +461,20 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 				if (this->game->hits_left.GetInteger() <= 0) {
 					CAudio::Instance()->Stop(AUDIO_LAKE);	
 					CAudio::Instance()->Stop(AUDIO_NTUT);
+					level = 0;
+					alevel = 0;
+					enemyconst = 1;
+					demonconst = 1;
+					nowenemy = enemyconst;
+					nowdemon = demonconst;
+					map.setmap(level);
 					GotoGameState(GAME_STATE_OVER);
 				}
 			}
 		}
 	}
 	if (level == 1) {
-		for (int i = 0; i < totaldemon; i++) {
+		for (int i = 0; i < nowdemon; i++) {
 			if (demon[i].IsAlive() && demon[i].HitCSword(&sword)) {
 				demonconst--;
 				demon[i].SetIsAlive(false);
@@ -417,7 +487,14 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 				this->game->hits_left.Add(-1);
 				if (this->game->hits_left.GetInteger() <= 0) {
 					CAudio::Instance()->Stop(AUDIO_LAKE);	
-					CAudio::Instance()->Stop(AUDIO_NTUT);	
+					CAudio::Instance()->Stop(AUDIO_NTUT);
+					level = 0;
+					alevel = 0;
+					enemyconst = 1;
+					demonconst = 1;
+					nowenemy = enemyconst;
+					nowdemon = demonconst;
+					map.setmap(level);
 					GotoGameState(GAME_STATE_OVER);
 				}
 			}
@@ -430,7 +507,12 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 			if (boss[i].IsAlive() && boss[i].HitCSword(&sword)) {
 				boss[i].SetIsAlive(true);
 				CAudio::Instance()->Play(AUDIO_BOSS_HIT);
-				boss[i].SetXY(100, 100);
+				if (sword.GetSword() == 1) {
+					boss[i].SetXY(boss[i].getx() + 70, boss[i].gety());
+				}
+				else if (sword.GetSword() == 2) {
+					boss[i].SetXY(boss[i].getx() - 70, boss[i].gety());
+				}
 				boss_blood.Add(-1);
 				if (boss_blood.GetInteger() <= 0) {
 					boss[i].SetIsAlive(false);
@@ -440,10 +522,17 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 				boss[i].SetIsAlive(true);
 				CAudio::Instance()->Play(AUDIO_DING);
 				this->game->hits_left.Add(-1);
-				boss[i].SetXY(100, 100);
+
 				if (this->game->hits_left.GetInteger() <= 0) {
 					CAudio::Instance()->Stop(AUDIO_LAKE);	// 停止 WAVE
 					CAudio::Instance()->Stop(AUDIO_NTUT);	// 停止 MIDI
+					level = 0;
+					alevel = 0;
+					enemyconst = 1;
+					demonconst = 1;
+					nowenemy = enemyconst;
+					nowdemon = demonconst;
+					map.setmap(level);
 					GotoGameState(GAME_STATE_OVER);
 				}
 			}
@@ -460,6 +549,13 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 			if (this->game->hits_left.GetInteger() <= 0) {
 				CAudio::Instance()->Stop(AUDIO_LAKE);	// 停止 WAVE
 				CAudio::Instance()->Stop(AUDIO_NTUT);	// 停止 MIDI
+				level = 0;
+				alevel = 0;
+				enemyconst = 1;
+				demonconst = 1;
+				nowenemy = enemyconst;
+				nowdemon = demonconst;
+				map.setmap(level);
 				GotoGameState(GAME_STATE_OVER);
 			}
 		}
@@ -476,6 +572,13 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 				if (this->game->hits_left.GetInteger() <= 0) {
 					CAudio::Instance()->Stop(AUDIO_LAKE);	// 停止 WAVE
 					CAudio::Instance()->Stop(AUDIO_NTUT);	// 停止 MIDI
+					level = 0;
+					alevel = 0;
+					enemyconst = 1;
+					demonconst = 1;
+					nowenemy = enemyconst;
+					nowdemon = demonconst;
+					map.setmap(level);
 					GotoGameState(GAME_STATE_OVER);
 				}
 			}
@@ -483,9 +586,9 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 	}
 	sword.SetXY(eraser.GetX1(), eraser.GetY1());
 	if (level == 0) {
-		for (int i = 0; i < totalenemy; i++) {
+		for (int i = 0; i < nowenemy; i++) {
 			temp = 0;
-			for (int j = 0; j < totalenemy; j++) {
+			for (int j = 0; j < nowenemy; j++) {
 				if (j != i) {
 					if (ball[i].HitOthers(&ball[j])) {
 						ball[i].istach();
@@ -502,9 +605,9 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 		}
 	}
 	if (level == 1) {
-		for (int i = 0; i < totaldemon; i++) {
+		for (int i = 0; i < nowdemon; i++) {
 			temp = 0;
-			for (int j = 0; j < totaldemon; j++) {
+			for (int j = 0; j < nowdemon; j++) {
 				if (j != i) {
 					if (demon[i].HitOthers(&demon[j])) {
 						demon[i].istach();
@@ -550,9 +653,11 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 {
 	c_practice.LoadBitmap();
 	level = 0;
-	enemyconst = 3;
-	demonconst = 5;
-	totalenemy = enemyconst;
+	alevel = 0;
+	enemyconst = 1;
+	demonconst = 1;
+	nowenemy = enemyconst;
+	nowdemon = demonconst;
 	map.setmap(level);
 	practice.LoadBitmap("RES\\bitmap3.bmp");
 	direction.LoadBitmap("Bitmaps/direction.bmp", RGB(0, 0, 0));
@@ -562,6 +667,8 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 	orc_1.LoadBitmap("Bitmaps/orc_1.bmp", RGB(0, 0, 0));
 	orc_2.LoadBitmap("Bitmaps/orc_2.bmp", RGB(0, 0, 0));
 	orc_3.LoadBitmap("Bitmaps/orc_3.bmp", RGB(0, 0, 0));
+	orc_4.LoadBitmap("Bitmaps/orc_4.bmp", RGB(0, 0, 0));
+	orc_5.LoadBitmap("Bitmaps/orc_5.bmp", RGB(0, 0, 0));
 	demon_1.LoadBitmap("Bitmaps/demon_1.bmp", RGB(0, 0, 0));
 	demon_2.LoadBitmap("Bitmaps/demon_2.bmp", RGB(0, 0, 0));
 	demon_3.LoadBitmap("Bitmaps/demon_3.bmp", RGB(0, 0, 0));
@@ -624,6 +731,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	const char KEY_TWO = 0x32;
 	const char KEY_THREE = 0x33;
 	const char KEY_FOUR = 0x34;
+	const char KEY_FIVE = 0x35;
 	const char ROLL = 0x10;
 	if (nChar == KEY_LEFT)
 		eraser.SetMovingLeft(true);
@@ -637,20 +745,27 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		eraser.SetRoll(true);
 	}
 	if (nChar == KEY_ONE) {
-		level = -1;
+		level = 0;
+		alevel = 0;
 		newlevel();
 	}
 	if (nChar == KEY_TWO) {
 		level = 0;
+		alevel = 14;
 		newlevel();
 	}
 	if (nChar == KEY_THREE) {
-		level = 1;
+		level = 2;
 		newlevel();
 	}
 	if (nChar == KEY_FOUR) {
+
 		GotoGameState(GAME_STATE_OVER);
 	}
+	//if (nChar == KEY_FIVE) {
+	//	const int HITS_LEFT = 1000;
+	//	
+	//}
 }
 void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
@@ -699,6 +814,12 @@ void CGameStateRun::OnShow()
 	if (level == 0) {
 		background1.ShowBitmap();
 		name1.ShowBitmap();
+		if (enemyconst == 5) {
+			orc_5.ShowBitmap();
+		}
+		else if (enemyconst == 4) {
+			orc_4.ShowBitmap();
+		}
 		if (enemyconst == 3) {
 			orc_3.ShowBitmap();
 		}
@@ -707,7 +828,7 @@ void CGameStateRun::OnShow()
 		}
 		else if (enemyconst == 1) {
 			orc_1.ShowBitmap();
-		}	
+		}
 	}
 	if (level == 1) {
 		background2.ShowBitmap();
@@ -745,12 +866,12 @@ void CGameStateRun::OnShow()
 		}
 	}
 	if (level == 0) {
-		for (int i = 0; i < totalenemy; i++) {
+		for (int i = 0; i < nowenemy; i++) {
 			ball[i].OnShow();				
 		}
 	}
 	if (level == 1) {
-		for (int i = 0; i < totaldemon; i++) {
+		for (int i = 0; i < nowdemon; i++) {
 			demon[i].OnShow();				
 		}
 	}

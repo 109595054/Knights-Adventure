@@ -13,7 +13,7 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// ï¿½ï¿½ï¿½ï¿½ (ï¿½cï¿½ï¿½Aï¿½xï¿½W) resources
+// ¤¤¤å (ÁcÅé¡A¥xÆW) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHT)
 LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_TRADITIONAL
@@ -126,7 +126,6 @@ IDB_BITMAP8             BITMAP                  "..\\res\\bmp00003.bmp"
 
 map2_1                  BITMAP                  "..\\res\\bitmap10.bmp"
 
-
 map2_2                  BITMAP                  "..\\res\\bitmap11.bmp"
 
 
@@ -139,12 +138,12 @@ map2_2                  BITMAP                  "..\\res\\bitmap11.bmp"
 
 IDC_GAMECURSOR          CURSOR                  "..\\res\\gamecurs.cur"
 
-#endif    // ï¿½ï¿½ï¿½ï¿½ (ï¿½cï¿½ï¿½Aï¿½xï¿½W) resources
+#endif    // ¤¤¤å (ÁcÅé¡A¥xÆW) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
 /////////////////////////////////////////////////////////////////////////////
-// ï¿½^ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½) resources
+// ­^¤å (¬ü°ê) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
@@ -216,7 +215,7 @@ BEGIN
     END
     POPUP "&Help"
     BEGIN
-        MENUITEM "&About game",              ID_APP_ABOUT
+        MENUITEM "&About game",                 ID_APP_ABOUT
     END
 END
 
@@ -247,7 +246,6 @@ BEGIN
     LTEXT           "Knight's Adventure",IDC_STATIC,39,10,119,8,SS_NOPREFIX
     LTEXT           "2023/06/10",IDC_STATIC,39,23,119,8
     DEFPUSHBUTTON   "OK",IDOK,172,7,39,14,WS_GROUP
-    
 END
 
 
@@ -439,7 +437,7 @@ BEGIN
     ID_BUTTON_UNITTEST      "Perform Unit Test"
 END
 
-#endif    // ï¿½^ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½) resources
+#endif    // ­^¤å (¬ü°ê) resources
 /////////////////////////////////////////////////////////////////////////////
 
 

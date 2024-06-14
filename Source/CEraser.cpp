@@ -125,16 +125,34 @@ namespace game_framework {
 
 			if (isrun == 1) {
 				if (x < right) {
-					x += STEP_SIZE + 5;
-
-				}					
+					x += STEP_SIZE + 3;
+					if (isMovingUp) {
+						if (y > top) {
+							y -= STEP_SIZE + 2;
+						}
+					}
+					else if (isMovingDown) {
+						if (y < down) {
+							y += STEP_SIZE + 2;
+						}
+					}
+				}
 				rolll.OnMove();
 				rollr.OnMove();
 			}
 			else if(isrun == 2) {
 				if (x > lift) {
-					x -= STEP_SIZE + 5;
-
+					x -= STEP_SIZE + 3;
+					if (isMovingUp) {
+						if (y > top) {
+							y -= STEP_SIZE + 2;
+						}
+					}
+					else if (isMovingDown) {
+						if (y < down) {
+							y += STEP_SIZE + 2;
+						}
+					}
 				}
 				rolll.OnMove();
 				rollr.OnMove();
